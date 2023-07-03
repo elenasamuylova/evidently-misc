@@ -76,10 +76,10 @@ What happens in this script:
 * We **create a project**. Each project corresponds to a different model you monitor. -> You can give a custom name to your project.
 * We import a demo dataset (“adult”) and define a script to generate 20 daily **snapshots** to imitate production batch inference -> You can **replace it for your data** and generate a few snapshots. Important: you must store the snapshots inside a specific project.
 * We **add panels to the project**. A panel corresponds to a single visual dashboard that appears in the “dashboards” section. -> You can define your composition:
-** You can create as many dashboards as you like and give custom names.
-** You can only create a dashboard for the metrics that were logged. 
-** You can show multiple metrics on the same dashboard. 
-** You can choose between the “counter” and “plot” types.
+   * You can create as many dashboards as you like and give custom names.
+   * You can only create a dashboard for the metrics that were logged. 
+   * You can show multiple metrics on the same dashboard. 
+   * You can choose between the “counter” and “plot” types.
 
 What is a snapshot:
 A **snapshot** is a single “log” instance, e.g., a daily log. You can convert a snapshot to the visual Evidently Report or its structured JSON / Python dictionary version.
@@ -102,5 +102,57 @@ evidently ui --workspace ./workspace --port 8080
 # 3. How will it work in production?
 
 If you have batch model inference, e.g., daily, you can log the Evidently `snapshots` after any meaningful step in the pipeline. Just like you run the usual Evidently Reports or Test Suites.
+
+![](https://github.com/elenasamuylova/evidently-misc/blob/main/img/evidently_batch-min.png)
+
+You can store the JSON snapshots in an object storage or local folder. 
+
+**Note**: a snapshot is different from using the usual `json()` or `save_json(“file.json”)`. When using the usual JSON export, you generate a structured output with limited information. You cannot convert JSON back to HTML. With `snapshot`, you generate a comprehensive summary and can restore the output in any available Evidently format without accessing the initial raw data. 
+
+The snapshot functionality is already available. You can save the snapshot after you create any Evidently Report or Test suite, use the `save` function and specify the path.
+```python
+data_drift_dataset_report._save(os.path.join(PATH, f”data_drift_profile.json’’))
+```
+
+To load the snapshot back, use the “load” function. 
+```python
+restored_report = Report._load(os.path.join(PATH, f”data_drift_profile.json’’))
+Restored_report
+```
+
+There is also an API with a workspace add method used in the script above. It directly adds a snapshot to the workspace.
+
+**Note**: the below functionality is not yet released and will not be part of the initial release.  
+
+If you deploy your ML model as a service, you will be able to POST model logs to a collector service that will abstract away the computation of snapshots. You will be able to define the batch size or metric computation frequency using a config file.
+
+![](https://github.com/elenasamuylova/evidently-misc/blob/main/img/evidently_rt-min.png)
+
+# What’s next
+We are currently working on the following:
+* Documentation
+* Add a selection of time ranges in the UI (to allow only showing, e.g., “last 7 days”).
+* Give the ability to add and delete dashboard panels in the interface.
+* Add pre-built tabs to the interface. Right now, you define and create each dashboard on your own. We want to automatically show tabs with predefined visualizations to summarize “Data drift,” “Data Quality,” and “Model Quality.” 
+
+# 4. Questions: help us make Evidently better! 
+
+* **Clarity**: is anything unclear in this workflow? What should we explain better when documenting and showing to users?
+* **Blockers and lacking features**: can you use this monitoring UI in your workflow? If not, which functionality we must add for you to be able to use it?
+* **Adding dashboards from the user interface VS defining in the code**. Do you want to add dashboards directly from UI, or defining them via code configuration is OK? How important is the definition of dashboards in UI to start using monitoring?
+* **Logging a limited set of metrics VS “logging it all”**. There are two possible approaches: 1. Select and log a predefined list of metrics. 2. Log “as much as can be useful” upfront. The second approach simplifies debugging and adding extra dashboards. How do you expect to use Evidently UI - will you manually pick metrics, or do you want to use logging presets?
+* **Adding tabs**. We are considering adding the following pre-built tabs:
+  * Data quality
+  * Data drift
+  * Model quality 
+Which tabs would you like to see and use?
+
+* **How important is integration with ML service**, or can you start using Evidently UI with a batch workflow? Which orchestrator (Kubeflow, Airflow, Prefect, Databricks pipelines, etc.) or pipeline framework (Metaflow) do you plan to use it with?
+
+* Anything else you want to share!
+
+
+
+
 
 
