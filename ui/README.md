@@ -113,12 +113,12 @@ You can store the JSON snapshots in an object storage or local folder.
 
 The snapshot functionality is already available. You can save the snapshot after you create any Evidently Report or Test suite, use the `save` function and specify the path.
 ```python
-data_drift_dataset_report._save(os.path.join(PATH, f”data_drift_profile.json’’))
+data_drift_dataset_report._save(os.path.join(PATH, f"data_drift_profile.json"))
 ```
 
 To load the snapshot back, use the “load” function. 
 ```python
-restored_report = Report._load(os.path.join(PATH, f”data_drift_profile.json’’))
+restored_report = Report._load(os.path.join(PATH, f"data_drift_profile.json"))
 Restored_report
 ```
 
