@@ -61,3 +61,46 @@ Go to the `localhost:8080`
 >
 >**Reports** and **Test suites** show individual Evidently reports and test suites, as if logged daily. You can explore and download.
 
+# 2. Change the example (Optional)
+
+To update the example, e.g. edit dashboard, reports or test suites follow steps below. 
+**Note**: there is no detailed documentation yet, but it’s possible to follow along by example. 
+
+**Step 1**: Open `generate_workspace.py` script and edit it. Save your changes.
+
+The path is `src/evidently/ui/generate_workspace.py`
+
+What happens in this script:
+* We import the usual Evidently Reports and Test Suites. They define which metrics will be available for monitoring. -> You can **specify monitoring contents** using any existing Evidently presets, metrics, or tests.
+* We **create a workspace** -> You can give it a custom name. 
+* We **create a project**. Each project corresponds to a different model you monitor. -> You can give a custom name to your project.
+* We import a demo dataset (“adult”) and define a script to generate 20 daily **snapshots** to imitate production batch inference -> You can **replace it for your data** and generate a few snapshots. Important: you must store the snapshots inside a specific project.
+* We **add panels to the project**. A panel corresponds to a single visual dashboard that appears in the “dashboards” section. -> You can define your composition:
+** You can create as many dashboards as you like and give custom names.
+** You can only create a dashboard for the metrics that were logged. 
+** You can show multiple metrics on the same dashboard. 
+** You can choose between the “counter” and “plot” types.
+
+What is a snapshot:
+A **snapshot** is a single “log” instance, e.g., a daily log. You can convert a snapshot to the visual Evidently Report or its structured JSON / Python dictionary version.
+
+**Step 2**: Delete previously generated workspace.
+```python
+cd src/evidently/ui/
+rm -r workspace
+```
+
+**Step 3**: Run the script `generate_workspace.py` you created at step 1 to create a new workspace, generate snapshots and dashboards.
+
+**Step 4**: Run evidently ui service (change the path if you renamed the workspace)
+```python
+evidently ui --workspace ./workspace --port 8080
+```
+
+**Step 5**: Access Evidently UI service in your browser. Go to the `localhost:8080`
+
+# 3. How will it work in production?
+
+If you have batch model inference, e.g., daily, you can log the Evidently `snapshots` after any meaningful step in the pipeline. Just like you run the usual Evidently Reports or Test Suites.
+
+
