@@ -16,6 +16,8 @@ This document includes the following:
 # 1. Launch the UI example 
 It includes a demo project with pre-built dashboards and 20 daily snapshots: as if you ran daily batch inference, and logged the results every day.  
 
+![](https://github.com/elenasamuylova/evidently-misc/blob/main/img/ui_basic-min.png)
+
 To run the example of Evidently UI service follow the steps below.
 
 **Step 1**: (optional, but highly recommended) Create virtual environment and activate it.
