@@ -39,7 +39,7 @@ git checkout feature/evidently_service_ui
 **Step 4**: Build the project
 ```python
 pip install -e .
-```python
+```
 
 **Step 5**: Run the command to generate an example workspace with a project and some reports and test suites.
 ```python
