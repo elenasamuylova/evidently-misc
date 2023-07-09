@@ -119,7 +119,7 @@ data_drift_dataset_report._save(os.path.join(PATH, f"data_drift_profile.json"))
 To load the snapshot back, use the “load” function. 
 ```python
 restored_report = Report._load(os.path.join(PATH, f"data_drift_profile.json"))
-Restored_report
+restored_report
 ```
 
 There is also an API with a workspace add method used in the script above. It directly adds a snapshot to the workspace.
@@ -147,6 +147,7 @@ We are currently working on the following:
   * Data quality
   * Data drift
   * Model quality 
+
 Which tabs would you like to see and use?
 
 * **How important is integration with ML service**, or can you start using Evidently UI with a batch workflow? Which orchestrator (Kubeflow, Airflow, Prefect, Databricks pipelines, etc.) or pipeline framework (Metaflow) do you plan to use it with?
